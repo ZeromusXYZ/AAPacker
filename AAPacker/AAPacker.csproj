@@ -12,9 +12,18 @@
         <Description>Provides a AAPak class that can be used to read and manipulate game_pak files from ArcheAge</Description>
         <Copyright>2019-2022 ZeromusXYZ</Copyright>
         <EnableNETAnalyzers>False</EnableNETAnalyzers>
+        <PackageProjectUrl>https://github.com/ZeromusXYZ/AAPacker</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/ZeromusXYZ/AAPacker</RepositoryUrl>
+        <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
     <ItemGroup>
+      <None Include="..\README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
