@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <LangVersion>default</LangVersion>
+        <TargetFrameworks>net48;net6.0</TargetFrameworks>
+        <RootNamespace>AAPacker</RootNamespace>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Title>AAPacker game_pak file handler</Title>
+        <Description>Provides a AAPak class that can be used to read and manipulate game_pak files from ArcheAge</Description>
+        <Copyright>2019-2022 ZeromusXYZ</Copyright>
+        <EnableNETAnalyzers>False</EnableNETAnalyzers>
+    </PropertyGroup>
+
+    <ItemGroup>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    </ItemGroup>
+
+</Project>
