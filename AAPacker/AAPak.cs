@@ -17,6 +17,9 @@ public class AAPak
     /// </summary>
     public AAPakFileFormatReader Reader { get; set; }
 
+    /// <summary>
+    /// List of available reader that will be used to automatically detect the format, default populated with the same settings as PakType.Classic
+    /// </summary>
     public static List<AAPakFileFormatReader> ReaderPool { get; set; } = new() { new AAPakFileFormatReader(true) };
 
     /// <summary>
@@ -716,7 +719,7 @@ public class AAPak
     /// Try to find a file inside the pak file based on a Offset position inside the pak file.
     /// Note: this only checks inside the used files and does not account for "deleted" files
     /// </summary>
-    /// <param name="Offset">Offset to check against</param>
+    /// <param name="offset">Offset to check against</param>
     /// <param name="fileInfo">Returns the found file's info, or nullAAPakFileInfo if nothing was found</param>
     /// <returns>Returns true if the location was found to be inside a valid file</returns>
     public bool FindFileByOffset(long offset, out AAPakFileInfo fileInfo)
@@ -1012,14 +1015,20 @@ public class AAPak
     }
 
     /// <summary>
-    ///     Reverts back to the original encryption key, this function is also automatically called when closing a file
+    /// Reverts back to the original encryption key, this function is also automatically called when closing a file
     /// </summary>
     public void SetDefaultKey()
     {
         Header.SetDefaultKey();
     }
 
-    public void TriggerProgress(AAPakLoadingProgressType progressType, int step, int maximum)
+    /// <summary>
+    /// Helper function to report progress
+    /// </summary>
+    /// <param name="progressType">Type of progress being reported</param>
+    /// <param name="step">Current step in the progress</param>
+    /// <param name="maximum">Maximum steps for this progress</param>
+    internal void TriggerProgress(AAPakLoadingProgressType progressType, int step, int maximum)
     {
         OnProgress?.Invoke(this, progressType, step, maximum);
     }

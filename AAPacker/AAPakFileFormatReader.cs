@@ -7,10 +7,25 @@ namespace AAPacker;
 /// </summary>
 public enum AAPakFileHeaderElement
 {
+    /// <summary>
+    /// Any byte is considered valid
+    /// </summary>
     AnyByte,
+    /// <summary>
+    /// Byte must be zero (0x00)
+    /// </summary>
     NullByte,
+    /// <summary>
+    /// Bytes consist of the pak file header
+    /// </summary>
     Header,
+    /// <summary>
+    /// uint containing the file count
+    /// </summary>
     FilesCount,
+    /// <summary>
+    /// uint containing the extra/deleted file count
+    /// </summary>
     ExtraFilesCount
 }
 
@@ -19,15 +34,45 @@ public enum AAPakFileHeaderElement
 /// </summary>
 public enum AAPakFileInfoElement
 {
+    /// <summary>
+    /// The stored file name
+    /// </summary>
     FileName,
+    /// <summary>
+    /// Physical starting offset of the file within the pak file
+    /// </summary>
     Offset,
+    /// <summary>
+    /// Total bytes of the stored file
+    /// </summary>
     Size,
+    /// <summary>
+    /// Duplicate of Size, possible unpacked size
+    /// </summary>
     SizeDuplicate,
+    /// <summary>
+    /// Number of bytes padded to the stored file to align to a block
+    /// </summary>
     PaddingSize,
+    /// <summary>
+    /// 16 bytes containing the MD5 Hash of the stored file
+    /// </summary>
     Md5,
+    /// <summary>
+    /// Dummy value 1
+    /// </summary>
     Dummy1,
+    /// <summary>
+    /// long containing the stored file creation time
+    /// </summary>
     CreateTime,
+    /// <summary>
+    /// long containing the stored file last modified time
+    /// </summary>
     ModifyTime,
+    /// <summary>
+    /// Dummy value 2
+    /// </summary>
     Dummy2,
 }
 
@@ -36,6 +81,10 @@ public enum AAPakFileInfoElement
 /// </summary>
 public class AAPakFileFormatReader
 {
+    /// <summary>
+    /// Creates a format reader object
+    /// </summary>
+    /// <param name="initializeWithDefaults">Set to true to populate with data that emulates the PakType.Classic format</param>
     public AAPakFileFormatReader(bool initializeWithDefaults)
     {
         // Changed default constructor to fix issues related to arrays and json populating
