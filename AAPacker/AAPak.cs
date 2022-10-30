@@ -101,6 +101,16 @@ public class AAPak
     public int OnProgressFATFileInterval { get; set; } = 10000;
 
     /// <summary>
+    /// Create a game_pak file handler
+    /// </summary>
+    public AAPak()
+    {
+        // Reader = new AAPakFileFormatReader(true);
+        Header = new AAPakFileHeader(this);
+        IsOpen = false;
+    }
+
+    /// <summary>
     /// Creates and/or opens a game_pak file
     /// </summary>
     /// <param name="filePath">Filename of the pak</param>
