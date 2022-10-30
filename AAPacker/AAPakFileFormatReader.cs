@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AAPacker;
+﻿namespace AAPacker;
 
 /// <summary>
 /// Possible elements for Pak Header

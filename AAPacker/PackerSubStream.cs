@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace AAPacker;
+﻿namespace AAPacker;
 // Sources:
 // https://stackoverflow.com/questions/6949441/how-to-expose-a-sub-section-of-my-stream-to-a-user
 // https://social.msdn.microsoft.com/Forums/vstudio/en-US/c409b63b-37df-40ca-9322-458ffe06ea48/how-to-access-part-of-a-filestream-or-memorystream?forum=netfxbcl

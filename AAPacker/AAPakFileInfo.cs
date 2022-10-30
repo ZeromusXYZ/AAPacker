@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace AAPacker;
+﻿namespace AAPacker;
 
 /// <summary>
 /// File Details Block
