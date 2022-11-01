@@ -653,13 +653,7 @@ public class AAPak
     /// <returns>Returns true if the file was found</returns>
     public bool FileExists(string filename)
     {
-        return Files.Select(pfi => pfi.Name == filename).FirstOrDefault();
-        /*
-        foreach (var pfi in Files)
-            if (pfi.Name == filename)
-                return true;
-        return false;
-        */
+        return Files.Any(pfi => pfi.Name == filename);
     }
 
     /// <summary>
