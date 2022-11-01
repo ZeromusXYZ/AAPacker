@@ -17,7 +17,7 @@
         <RepositoryUrl>https://github.com/ZeromusXYZ/AAPacker</RepositoryUrl>
         <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>$(VersionPrefix)1.0.1</Version>
+        <Version>$(VersionPrefix)1.0.2</Version>
         <Authors>ZeromusXYZ</Authors>
     </PropertyGroup>
 
