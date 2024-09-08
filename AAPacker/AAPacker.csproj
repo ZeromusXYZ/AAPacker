@@ -4,21 +4,29 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>default</LangVersion>
-        <TargetFrameworks>net48;net6.0</TargetFrameworks>
+        <TargetFrameworks>net48;net8.0</TargetFrameworks>
         <RootNamespace>AAPacker</RootNamespace>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Title>AAPacker game_pak file handler</Title>
         <Description>Provides a AAPak class that can be used to read and manipulate game_pak files from ArcheAge</Description>
-        <Copyright>2019-2022 ZeromusXYZ</Copyright>
+        <Copyright>2019-2024 ZeromusXYZ</Copyright>
         <EnableNETAnalyzers>False</EnableNETAnalyzers>
         <PackageProjectUrl>https://github.com/ZeromusXYZ/AAPacker</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/ZeromusXYZ/AAPacker</RepositoryUrl>
         <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>$(VersionPrefix)1.0.2</Version>
+        <Version>$(VersionPrefix)1.1.0</Version>
         <Authors>ZeromusXYZ</Authors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
+      <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
+      <WarningLevel>4</WarningLevel>
     </PropertyGroup>
 
     <ItemGroup>

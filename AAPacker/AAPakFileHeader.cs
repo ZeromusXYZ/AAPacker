@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace AAPacker;
 
@@ -103,8 +104,7 @@ public class AAPakFileHeader
     /// <param name="newKey"></param>
     protected internal void SetCustomKey(byte[] newKey)
     {
-        Key = new byte[newKey.Length];
-        newKey.CopyTo(Key, 0);
+        Key = newKey.ToArray();
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public class AAPakFileHeader
     /// </summary>
     protected internal void SetDefaultKey()
     {
-        XlGamesKey.CopyTo(Key, 0);
+        Key = XlGamesKey.ToArray();
     }
 
     // SourceCode: https://stackoverflow.com/questions/44782910/aes128-decryption-in-c-sharp
@@ -128,7 +128,7 @@ public class AAPakFileHeader
         try
         {
             var aes = Aes.Create();
-            aes.Key = key;
+            aes.Key = key.ToArray();
             aes.IV = new byte[16];
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.None;
@@ -158,7 +158,7 @@ public class AAPakFileHeader
         try
         {
             var aes = Aes.Create();
-            aes.Key = key;
+            aes.Key = key.ToArray();
             aes.IV = new byte[16];
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.None;
@@ -655,7 +655,7 @@ public class AAPakFileHeader
     /// <returns></returns>
     private bool ValidateHeaderWithReader(AAPakFileFormatReader reader, byte[] raw, byte[] encryptionKey)
     {
-        Data = EncryptAes(RawData, encryptionKey, false);
+        Data = EncryptAes(raw, encryptionKey, false);
         var cursor = 0;
         var fCount = 0u;
         var eCount = 0u;
@@ -708,7 +708,7 @@ public class AAPakFileHeader
         }
 
         Owner.PakType = PakFileType.Reader;
-        Key = reader.HeaderEncryptionKey;
+        SetCustomKey(reader.HeaderEncryptionKey);
         FileCount = fCount;
         ExtraFileCount = eCount;
         return true;
@@ -720,12 +720,12 @@ public class AAPakFileHeader
     public void DecryptHeaderData()
     {
         // Save key that has been set by the program (if any), and try options using this one first
-        var preDefinedKey = Key;
+        var preDefinedKey = Key.ToArray();
 
         // If assigned a reader manually, check that one first
         if (Owner.Reader != null)
         {
-            if ((preDefinedKey != null) && (preDefinedKey.Length == 16))
+            if (preDefinedKey.Length == 16)
             {
                 IsValid = ValidateHeaderWithReader(Owner.Reader, RawData, preDefinedKey);
                 if (IsValid)
@@ -735,9 +735,11 @@ public class AAPakFileHeader
             IsValid = ValidateHeaderWithReader(Owner.Reader, RawData, Owner.Reader.HeaderEncryptionKey);
             if (IsValid)
             {
-                Key = Owner.Reader.HeaderEncryptionKey; // override loaded key
+                SetCustomKey(Owner.Reader.HeaderEncryptionKey); // override loaded key
                 return;
             }
+
+            Owner.LastError += $"Predefined Reader {Owner.Reader.ReaderName} could not validate header\n";
         }
 
         // Try guessing what reader to use from the ReaderPool
@@ -756,11 +758,13 @@ public class AAPakFileHeader
             if (ValidateHeaderWithReader(readerCheck, RawData, readerCheck.HeaderEncryptionKey))
             {
                 Owner.Reader = readerCheck;
-                Key = readerCheck.HeaderEncryptionKey; // override loaded key
+                SetCustomKey(readerCheck.HeaderEncryptionKey); // override loaded key
                 IsValid = true;
                 return;
             }
         }
+
+        Owner.LastError += $"{AAPak.ReaderPool.Count} reader(s) from the reader pool were unable to validate the header\n";
 
         // Fallback to default to verify
 
@@ -775,10 +779,11 @@ public class AAPakFileHeader
             FileCount = BitConverter.ToUInt32(Data, 8);
             ExtraFileCount = BitConverter.ToUInt32(Data, 12);
             IsValid = true;
+            Owner.LastError = string.Empty;
         }
         else
         {
-            // Doesn't look like this is a pak file, the file is corrupted, or is in a unknown layout/format
+            // Doesn't look like this is a pak file, the file is corrupted, or is in an unknown layout/format
             FileCount = 0;
             ExtraFileCount = 0;
             IsValid = false;
@@ -788,6 +793,8 @@ public class AAPakFileHeader
                 var hex = ByteArrayToHexString(Key, "", "");
                 File.WriteAllBytes("game_pak_failed_header_" + hex + ".key", Data);
             }
+
+            Owner.LastError += $"Fallback reader was unable to validate the header\n";
         }
     }
 

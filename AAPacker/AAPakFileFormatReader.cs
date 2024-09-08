@@ -90,7 +90,7 @@ public class AAPakFileFormatReader
         {
             ReaderName = "Default";
             IsDefault = true;
-            HeaderEncryptionKey = XlGamesKey;
+            HeaderEncryptionKey = XlGamesKey.ToArray();
             HeaderBytes = new byte[] { 0x57, 0x49, 0x42, 0x4F };
             ReadOrder = new()
             {

@@ -6,7 +6,7 @@
 internal class PackerSubStream : Stream
 {
     private readonly long _baseOffset;
-    private readonly Stream _baseStream;
+    private Stream _baseStream;
     private readonly long _length;
     private long _position;
 
@@ -122,17 +122,21 @@ internal class PackerSubStream : Stream
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        /*
         if (disposing)
         {
-            if (baseStream != null)
+            if (_baseStream != null)
             {
-                try { baseStream.Dispose(); }
-                catch { }
-                baseStream = null;
+                try
+                {
+                    _baseStream.Dispose();
+                }
+                catch
+                {
+                    // Ignore
+                }
+                _baseStream = null;
             }
         }
-        */
     }
 
     public override void Write(byte[] buffer, int offset, int count)

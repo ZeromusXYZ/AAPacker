@@ -169,10 +169,17 @@ public class AAPak
 
         // Fail if already open
         if (IsOpen)
+        {
+            LastError = $"File is already opened";
             return false;
+        }
 
         // Check if it exists
-        if (!File.Exists(filePath)) return false;
+        if (!File.Exists(filePath))
+        {
+            LastError = $"File not found {filePath}";
+            return false;
+        }
 
         IsVirtual = false;
             
@@ -301,13 +308,16 @@ public class AAPak
             SaveHeader();
 
         GpFileStream?.Close();
+        GpFileStream?.Dispose();
         GpFileStream = null;
         GpFilePath = null;
         IsOpen = false;
         PakType = PakFileType.Classic;
         Reader = null;
-        Header.SetDefaultKey();
+        // Header.SetDefaultKey();
         LastError = string.Empty;
+        Files.Clear();
+        ExtraFiles.Clear();
 
         TriggerProgress(AAPakLoadingProgressType.ClosingFile, 100, 100);
     }
@@ -367,7 +377,10 @@ public class AAPak
             
         // If it failed to even read the first 32 bytes, then don't even bother
         if (amountRead < 32)
+        {
+            LastError = "File too small";
             return false;
+        }
 
         TriggerProgress(AAPakLoadingProgressType.ReadingHeader, 25, 100);
 
@@ -663,7 +676,8 @@ public class AAPak
     /// <returns>Returns a PackerSubStream of file within the pak</returns>
     public Stream ExportFileAsStream(AAPakFileInfo file)
     {
-        return new PackerSubStream(GpFileStream, file.Offset, file.Size);
+        var newFileStream = File.OpenRead(GpFilePath);
+        return new PackerSubStream(newFileStream, file.Offset, file.Size);
     }
 
     /// <summary>
@@ -673,8 +687,8 @@ public class AAPak
     /// <returns>Returns a PackerSubStream of file within the pak, or a empty MemoryStream if the file was not found</returns>
     public Stream ExportFileAsStream(string fileName)
     {
-        if (GetFileByName(fileName, out var file))
-            return new PackerSubStream(GpFileStream, file.Offset, file.Size);
+        if (GetFileByName(fileName, out var aaPakFileInfo))
+            return ExportFileAsStream(aaPakFileInfo);
         return new MemoryStream();
     }
 
