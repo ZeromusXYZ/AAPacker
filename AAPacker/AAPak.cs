@@ -676,7 +676,7 @@ public class AAPak
     /// <returns>Returns a PackerSubStream of file within the pak</returns>
     public Stream ExportFileAsStream(AAPakFileInfo file)
     {
-        var newFileStream = File.OpenRead(GpFilePath);
+        var newFileStream = File.Open(GpFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         return new PackerSubStream(newFileStream, file.Offset, file.Size);
     }
 
