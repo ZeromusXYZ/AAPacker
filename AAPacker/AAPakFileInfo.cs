@@ -3,7 +3,7 @@
 /// <summary>
 /// File Details Block
 /// </summary>
-public class AAPakFileInfo
+public class AAPakFileInfo : IComparable
 {
     /// <summary>
     /// Original file creation time
@@ -64,4 +64,17 @@ public class AAPakFileInfo
     /// Always observed as being the same as fileSize
     /// </summary>
     public long SizeDuplicate { get; set; }
+
+    /// <summary>
+    /// Compares to another AAPakFileInfo's file Name
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public int CompareTo(object obj)
+    {
+        if (obj is not AAPakFileInfo other)
+            throw new NotImplementedException();
+        return string.Compare(Name, other.Name, StringComparison.Ordinal);
+    }
 }
