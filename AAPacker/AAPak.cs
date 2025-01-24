@@ -625,7 +625,7 @@ public class AAPak
     public bool GetFileByName(string filename, out AAPakFileInfo fileInfo)
     {
         fileInfo = Files.FirstOrDefault(pfi => pfi.Name == filename) ?? NullAAPakFileInfo;
-        return fileInfo != null;
+        return fileInfo != NullAAPakFileInfo;
         /*
         foreach (var pfi in Files.Where(pfi => pfi.Name == filename))
         {
